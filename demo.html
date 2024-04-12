@@ -19,16 +19,21 @@
 			<relative-time update="1"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
 		</p>
 		<p>
+			<relative-time update="1"><time id="past-further" datetime="2024-04-09T12:00:00+0800">9 April 2024</time> until <time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+		</p>
+		<p>
 			<relative-time update="false"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
 		</p>
 		<script>
 			const nowEpoch = Date.now()
-			const past = new Date(nowEpoch - 1000).toISOString()
-			const timeElements = document.querySelectorAll("[datetime]")
+			const past = new Date(nowEpoch - (1 * 1000)).toISOString()
+			const pastFurther = new Date(nowEpoch - (10 * 1000)).toISOString()
+			const timeElements = document.querySelectorAll("[datetime]:not(#past-further)")
 			const timeElementsArray = [...timeElements]
 			timeElementsArray.forEach((element) => {
 				element.setAttribute("datetime", past)
 			})
+			document.getElementById("past-further").setAttribute("datetime", pastFurther)
 		</script>
 		<script type="module" src="relative-time.js" defer></script>
 	</body>

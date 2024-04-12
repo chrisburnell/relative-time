@@ -1,4 +1,4 @@
-# `relative-time`
+# `<relative-time>`
 
 A Web Component to display an event countdown.
 
@@ -11,31 +11,7 @@ A Web Component to display an event countdown.
 ```html
 <script type="module" src="relative-time.js"></script>
 
-<relative-time name="My event" start="2024-04-09T00:00:00+14:00"></relative-time>
-```
-
-### With end point
-
-```html
-<script type="module" src="relative-time.js"></script>
-
-<relative-time name="My event" end="2024-04-09T23:59:59-12:00"></relative-time>
-```
-
-### Both start and end points
-
-```html
-<script type="module" src="relative-time.js"></script>
-
-<relative-time name="My event" start="2024-04-09T00:00:00+14:00" end="2024-04-09T23:59:59-12:00"></relative-time>
-```
-
-### Annual events
-
-```html
-<script type="module" src="relative-time.js"></script>
-
-<relative-time name="My event" start="2024-04-09T00:00:00+14:00"annual="true"></relative-time>
+<relative-time><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
 ```
 
 ### Update frequency
@@ -44,10 +20,10 @@ A Web Component to display an event countdown.
 <script type="module" src="relative-time.js"></script>
 
 <!-- Updates every 1 second -->
-<relative-time name="My event" start="2024-04-09T00:00:00+14:00" update="1"></relative-time>
+<relative-time update="1"><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
 
 <!-- Disable updates -->
-<relative-time name="My event" start="2024-04-09T00:00:00+14:00" update="false"></relative-time>
+<relative-time update="false"><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
 ```
 
 ### Specific division
@@ -55,7 +31,7 @@ A Web Component to display an event countdown.
 ```html
 <script type="module" src="relative-time.js"></script>
 
-<relative-time name="My event" start="2024-04-09T00:00:00+14:00" division="second"></relative-time>
+<relative-time division="second"><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
 ```
 
 ### Maximum division
@@ -63,7 +39,7 @@ A Web Component to display an event countdown.
 ```html
 <script type="module" src="relative-time.js"></script>
 
-<relative-time name="My event" start="2024-04-09T00:00:00+14:00" max-division="minute"></relative-time>
+<relative-time max-divions="minute"><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
 ```
 
 ## Installation

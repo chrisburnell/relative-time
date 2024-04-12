@@ -45,8 +45,9 @@ class RelativeTime extends HTMLElement {
 	]
 
 	connectedCallback() {
-		if (!this.querySelector("time").hasAttribute("datetime")) {
-			console.error(`Missing \`datetime\` attribute on <time> element!`, this)
+		this.timeElements = [...this.querySelectorAll("time[datetime]")]
+
+		if (this.timeElements.length === 0) {
 			return
 		}
 
@@ -60,8 +61,6 @@ class RelativeTime extends HTMLElement {
 	init() {
 		this.initialized = true
 
-		this.timeElement = this.querySelector("time")
-		this.datetime = this.timeElement.hasAttribute("datetime") ? new Date(this.timeElement.getAttribute("datetime")) : null
 		this.update = this.hasAttribute("update") ? Number(this.getAttribute("update")) : 600 // 600 * 1000 = 10 minutes
 		this.enableUpdates = this.getAttribute("update") !== "false"
 		this.division = this.getAttribute("division")
@@ -99,8 +98,11 @@ class RelativeTime extends HTMLElement {
 	}
 
 	setString() {
-		this.timeElement.innerHTML = this.getRelativeTime(this.datetime, this.division)
-		this.timeElement.title = `${this.datetime.toLocaleString()} (local time)`
+		this.timeElements.forEach((element) => {
+			const datetime = new Date(element.getAttribute("datetime"))
+			element.innerHTML = this.getRelativeTime(datetime, this.division)
+			element.title = `${datetime.toLocaleString()} (local time)`
+		})
 	}
 
 	beginInterval() {
