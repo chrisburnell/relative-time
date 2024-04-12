@@ -1,81 +1,93 @@
-# `component-name`
+# `relative-time`
 
-A Web Component for…
+A Web Component to display an event countdown.
 
-**[Demo](https://daviddarnes.github.io/component-template/demo.html)** | **[Further reading](https://darn.es/web-component-github-starter-template/)**
+**[Demo](https://chrisburnell.github.io/relative-time/demo.html)** | **[Further reading](https://chrisburnell.com/relative-time/)**
 
-## Examples
+## Usage
 
-General usage example:
-
-```html
-<script type="module" src="component-name.js"></script>
-
-<component-name>
-  <button>Button</button>
-</component-name>
-```
-
-Example using a fallback method:
+### General usage example
 
 ```html
-<script type="module" src="component-name.js"></script>
+<script type="module" src="relative-time.js"></script>
 
-<component-name>
-  <button>Button</button>
-  <a href="#">Anchor</a>
-</component-name>
-<style>
-  component-name:not(:defined) button,
-  component-name:defined a {
-    display: none;
-  }
-</style>
+<relative-time name="My event" start="2024-04-09T00:00:00+14:00"></relative-time>
 ```
 
-Example using options or additional fallback method:
+### With end point
 
 ```html
-<script type="module" src="component-name.js"></script>
+<script type="module" src="relative-time.js"></script>
 
-<component-name attribute="value">
-  <button>Button</button>
-</component-name>
-<style>
-  component-name[attribute="value"] {
-    outline: 1px solid red;
-  }
-</style>
+<relative-time name="My event" end="2024-04-09T23:59:59-12:00"></relative-time>
 ```
 
-## Features
+### Both start and end points
 
-This Web Component allows you to:
+```html
+<script type="module" src="relative-time.js"></script>
 
-- Check for…
+<relative-time name="My event" start="2024-04-09T00:00:00+14:00" end="2024-04-09T23:59:59-12:00"></relative-time>
+```
+
+### Annual events
+
+```html
+<script type="module" src="relative-time.js"></script>
+
+<relative-time name="My event" start="2024-04-09T00:00:00+14:00"annual="true"></relative-time>
+```
+
+### Update frequency
+
+```html
+<script type="module" src="relative-time.js"></script>
+
+<!-- Updates every 1 second -->
+<relative-time name="My event" start="2024-04-09T00:00:00+14:00" update="1"></relative-time>
+
+<!-- Disable updates -->
+<relative-time name="My event" start="2024-04-09T00:00:00+14:00" update="false"></relative-time>
+```
+
+### Specific division
+
+```html
+<script type="module" src="relative-time.js"></script>
+
+<relative-time name="My event" start="2024-04-09T00:00:00+14:00" division="second"></relative-time>
+```
+
+### Maximum division
+
+```html
+<script type="module" src="relative-time.js"></script>
+
+<relative-time name="My event" start="2024-04-09T00:00:00+14:00" max-division="minute"></relative-time>
+```
 
 ## Installation
 
 You have a few options (choose one of these):
 
-1. Install via [npm](https://www.npmjs.com/package/@daviddarnes/component-name): `npm install @daviddarnes/component-name`
-1. [Download the source manually from GitHub](https://github.com/daviddarnes/component-name/releases) into your project.
+1. Install via [npm](https://www.npmjs.com/package/@chrisburnell/relative-time): `npm install @chrisburnell/relative-time`
+1. [Download the source manually from GitHub](https://github.com/chrisburnell/relative-time/releases) into your project.
 1. Skip this step and use the script directly via a 3rd party CDN (not recommended for production use)
 
-### Usage
+## Usage
 
 Make sure you include the `<script>` in your project (choose one of these):
 
 ```html
 <!-- Host yourself -->
-<script type="module" src="component-name.js"></script>
+<script type="module" src="relative-time.js"></script>
 ```
 
 ```html
 <!-- 3rd party CDN, not recommended for production use -->
 <script
   type="module"
-  src="https://www.unpkg.com/@daviddarnes/component-name@1.0.0/component-name.js"
+  src="https://www.unpkg.com/@chrisburnell/relative-time/relative-time.js"
 ></script>
 ```
 
@@ -83,7 +95,7 @@ Make sure you include the `<script>` in your project (choose one of these):
 <!-- 3rd party CDN, not recommended for production use -->
 <script
   type="module"
-  src="https://esm.sh/@daviddarnes/component-name@1.0.0"
+  src="https://esm.sh/@chrisburnell/relative-time"
 ></script>
 ```
 
@@ -91,4 +103,4 @@ Make sure you include the `<script>` in your project (choose one of these):
 
 With thanks to the following people:
 
-- [Zach Leatherman](https://zachleat.com) for inspiring this [Web Component repo template](https://github.com/daviddarnes/component-template)
+- [David Darnes](https://darn.es) for creating this [Web Component repo template](https://github.com/daviddarnes/component-template)
