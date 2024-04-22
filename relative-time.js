@@ -51,8 +51,6 @@ class RelativeTime extends HTMLElement {
 			return
 		}
 
-		this.interval
-
 		if (!this.initialized) {
 			this.init()
 		}
@@ -61,20 +59,22 @@ class RelativeTime extends HTMLElement {
 	init() {
 		this.initialized = true
 
-		this.update = this.hasAttribute("update") ? Number(this.getAttribute("update")) : 600 // 600 * 1000 = 10 minutes
-		this.enableUpdates = this.getAttribute("update") !== "false"
 		this.division = this.getAttribute("division")
 		this.maxDivision = this.getAttribute("max-division")
+		this.update = this.hasAttribute("update") ? Number(this.getAttribute("update")) : 600 // 600 * 1000 = 10 minutes
+		this.lastUpdate = 0
+		this.enableUpdates = this.getAttribute("update") !== "false"
+		this.updateLoop
 
 		this.setString()
 
 		if (this.enableUpdates) {
-			this.beginInterval()
+			this.beginUpdateLoop()
+			window.addEventListener("blur", () => {
+				this.windowBlurHandler()
+			})
 			window.addEventListener("focus", () => {
 				this.windowFocusHandler()
-			})
-			window.addEventListener("blur", () => {
-				this.stopInterval()
 			})
 		}
 	}
@@ -105,24 +105,29 @@ class RelativeTime extends HTMLElement {
 		})
 	}
 
-	beginInterval() {
-		this.interval = setInterval(
-			() => {
+	beginUpdateLoop() {
+		const updateLoop = (currentTime) => {
+			this.updateLoop = requestAnimationFrame(updateLoop)
+			if (currentTime - this.lastUpdate >= this.update * 1000) {
 				this.setString()
-				this.beginInterval()
-			},
-			this.update * 1000
-		)
+				this.lastUpdate = currentTime
+			}
+		}
+		this.updateLoop = requestAnimationFrame(updateLoop)
 	}
 
-	stopInterval() {
-		clearInterval(this.interval)
+	stopUpdateLoop() {
+		this.lastUpdate = 0
+		cancelAnimationFrame(this.updateLoop)
+	}
+
+	windowBlurHandler() {
+		this.stopUpdateLoop()
 	}
 
 	windowFocusHandler() {
-		this.stopInterval()
 		this.setString()
-		this.beginInterval()
+		this.beginUpdateLoop()
 	}
 }
 
