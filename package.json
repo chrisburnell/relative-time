@@ -1,6 +1,6 @@
 {
   "name": "@chrisburnell/relative-time",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A Web Component to display a relative time.",
   "author": "Chris Burnell <me@chrisburnell.com>",
   "contributors": [
@@ -11,7 +11,6 @@
       "mastodon": "@chrisburnell@repc.co"
     }
   ],
-  "main": "index.js",
   "scripts": {
     "start": "npx http-server ."
   },

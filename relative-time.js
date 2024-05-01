@@ -45,19 +45,10 @@ class RelativeTime extends HTMLElement {
 	]
 
 	connectedCallback() {
-		this.timeElements = [...this.querySelectorAll("time[datetime]")]
-
+		console.log("connected callback")
 		if (this.timeElements.length === 0) {
 			return
 		}
-
-		if (!this.initialized) {
-			this.init()
-		}
-	}
-
-	init() {
-		this.initialized = true
 
 		this.division = this.getAttribute("division")
 		this.maxDivision = this.getAttribute("max-division")
@@ -70,11 +61,11 @@ class RelativeTime extends HTMLElement {
 
 		if (this.enableUpdates) {
 			this.beginUpdateLoop()
-			window.addEventListener("blur", () => {
-				this.windowBlurHandler()
-			})
 			window.addEventListener("focus", () => {
 				this.windowFocusHandler()
+			})
+			window.addEventListener("blur", () => {
+				this.windowBlurHandler()
 			})
 		}
 	}
@@ -105,6 +96,10 @@ class RelativeTime extends HTMLElement {
 		})
 	}
 
+	get timeElements() {
+		return this.querySelectorAll("time[datetime]")
+	}
+
 	beginUpdateLoop() {
 		const updateLoop = (currentTime) => {
 			this.updateLoop = requestAnimationFrame(updateLoop)
@@ -121,13 +116,13 @@ class RelativeTime extends HTMLElement {
 		cancelAnimationFrame(this.updateLoop)
 	}
 
-	windowBlurHandler() {
-		this.stopUpdateLoop()
-	}
-
 	windowFocusHandler() {
 		this.setString()
 		this.beginUpdateLoop()
+	}
+
+	windowBlurHandler() {
+		this.stopUpdateLoop()
 	}
 }
 
