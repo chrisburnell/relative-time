@@ -5,14 +5,6 @@ class RelativeTime extends HTMLElement {
 		}
 	}
 
-	static locale = document.querySelector("html").getAttribute("lang") || navigator.languages ? navigator.languages[0] : "en"
-
-	static rtf = new Intl.RelativeTimeFormat(RelativeTime.locale, {
-		localeMatcher: "best fit",
-		numeric: "always",
-		style: "long",
-	})
-
 	static divisions = [
 		{
 			amount: 60,
@@ -45,7 +37,6 @@ class RelativeTime extends HTMLElement {
 	]
 
 	connectedCallback() {
-		console.log("connected callback")
 		if (this.timeElements.length === 0) {
 			return
 		}
@@ -74,15 +65,15 @@ class RelativeTime extends HTMLElement {
 		let difference = (datetime.getTime() - Date.now()) / 1000
 
 		if (division) {
-			return RelativeTime.rtf.format(Math.round(difference), division)
+			return this.rtf.format(Math.round(difference), division)
 		}
 
 		for (const division of RelativeTime.divisions) {
 			if (this.maxDivision && division.name === this.maxDivision) {
-				return RelativeTime.rtf.format(Math.round(difference), division.name)
+				return this.rtf.format(Math.round(difference), division.name)
 			}
 			if (Math.floor(Math.abs(difference)) < division.amount) {
-				return RelativeTime.rtf.format(Math.round(difference), division.name)
+				return this.rtf.format(Math.round(difference), division.name)
 			}
 			difference /= division.amount
 		}
@@ -94,10 +85,6 @@ class RelativeTime extends HTMLElement {
 			element.innerHTML = this.getRelativeTime(datetime, this.division)
 			element.title = `${datetime.toLocaleString()} (local time)`
 		})
-	}
-
-	get timeElements() {
-		return this.querySelectorAll("time[datetime]")
 	}
 
 	beginUpdateLoop() {
@@ -123,6 +110,22 @@ class RelativeTime extends HTMLElement {
 
 	windowBlurHandler() {
 		this.stopUpdateLoop()
+	}
+
+	get locale() {
+		return this.getAttribute("lang") || this.closest("[lang]")?.getAttribute("lang") || (navigator.languages ? navigator.languages[0] : "en")
+	}
+
+	get timeElements() {
+		return this.querySelectorAll("time[datetime]")
+	}
+
+	get rtf() {
+		return new Intl.RelativeTimeFormat(this.locale, {
+			localeMatcher: "best fit",
+			numeric: "always",
+			style: "long",
+		})
 	}
 }
 

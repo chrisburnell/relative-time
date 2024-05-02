@@ -1,6 +1,6 @@
 {
   "name": "@chrisburnell/relative-time",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A Web Component to display a relative time.",
   "author": "Chris Burnell <me@chrisburnell.com>",
   "contributors": [

@@ -14,15 +14,23 @@
 		<p>
 			<relative-time><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
 		</p>
+		<h2 id="explicit-locale">Explicit locale</h2>
+		<p>
+			<relative-time lang="fr"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+		</p>
+		<h2 id="inherited-locale">Inherited locale</h2>
+		<p lang="de">
+			<relative-time><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+		</p>
 		<h2 id="annual">Update frequency</h2>
 		<p>
-			<relative-time update="3"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+			<relative-time update="3"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(updates every 3 seconds)</em>
 		</p>
 		<p>
-			<relative-time update="1">from <time id="past-further" datetime="2024-04-09T12:00:00+0800">9 April 2024</time> until <time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+			<relative-time update="1">from <time id="past-further" datetime="2024-04-09T12:00:00+0800">9 April 2024</time> until <time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(updates every second)</em>
 		</p>
 		<p>
-			<relative-time update="false"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+			<relative-time update="false"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(never updates)</em>
 		</p>
 		<script>
 			const nowEpoch = Date.now()
