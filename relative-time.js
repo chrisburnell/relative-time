@@ -116,16 +116,16 @@ class RelativeTime extends HTMLElement {
 		return this.getAttribute("lang") || this.closest("[lang]")?.getAttribute("lang") || (navigator.languages ? navigator.languages[0] : "en")
 	}
 
-	get timeElements() {
-		return this.querySelectorAll("time[datetime]")
-	}
-
 	get rtf() {
 		return new Intl.RelativeTimeFormat(this.locale, {
 			localeMatcher: "best fit",
 			numeric: "always",
 			style: "long",
 		})
+	}
+
+	get timeElements() {
+		return this.querySelectorAll("time[datetime]")
 	}
 }
 
