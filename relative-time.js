@@ -5,37 +5,6 @@ class RelativeTime extends HTMLElement {
 		}
 	}
 
-	static divisions = [
-		{
-			amount: 60,
-			name: "second",
-		},
-		{
-			amount: 60,
-			name: "minute",
-		},
-		{
-			amount: 24,
-			name: "hour",
-		},
-		{
-			amount: 7,
-			name: "day",
-		},
-		{
-			amount: 4.34524,
-			name: "week",
-		},
-		{
-			amount: 12,
-			name: "month",
-		},
-		{
-			amount: Number.POSITIVE_INFINITY,
-			name: "year",
-		},
-	]
-
 	connectedCallback() {
 		if (this.timeElements.length === 0) {
 			return
@@ -111,6 +80,37 @@ class RelativeTime extends HTMLElement {
 	windowBlurHandler() {
 		this.stopUpdateLoop()
 	}
+
+	static divisions = [
+		{
+			amount: 60,
+			name: "second",
+		},
+		{
+			amount: 60,
+			name: "minute",
+		},
+		{
+			amount: 24,
+			name: "hour",
+		},
+		{
+			amount: 7,
+			name: "day",
+		},
+		{
+			amount: 4.34524,
+			name: "week",
+		},
+		{
+			amount: 12,
+			name: "month",
+		},
+		{
+			amount: Number.POSITIVE_INFINITY,
+			name: "year",
+		},
+	]
 
 	get locale() {
 		return this.getAttribute("lang") || this.closest("[lang]")?.getAttribute("lang") || (navigator.languages ? navigator.languages[0] : "en")
