@@ -10,11 +10,7 @@ class RelativeTime extends HTMLElement {
 			return
 		}
 
-		this.division = this.getAttribute("division")
-		this.maxDivision = this.getAttribute("max-division")
-		this.update = this.hasAttribute("update") ? Number(this.getAttribute("update")) : 600 // 600 * 1000 = 10 minutes
 		this.lastUpdate = 0
-		this.enableUpdates = this.getAttribute("update") !== "false"
 		this.updateLoop
 
 		this.setString()
@@ -38,7 +34,7 @@ class RelativeTime extends HTMLElement {
 		}
 
 		for (const division of RelativeTime.divisions) {
-			if (this.maxDivision && division.name === this.maxDivision) {
+			if (this.maxDivision && division.name === this.maxDivision.replace(/s$/, "")) {
 				return this.rtf.format(Math.round(difference), division.name)
 			}
 			if (Math.floor(Math.abs(difference)) < division.amount) {
@@ -112,6 +108,17 @@ class RelativeTime extends HTMLElement {
 		},
 	]
 
+	static numericFormats = [
+		"always",
+		"auto",
+	]
+
+	static styleFormats = [
+		"long",
+		"short",
+		"narrow",
+	]
+
 	get locale() {
 		return this.getAttribute("lang") || this.closest("[lang]")?.getAttribute("lang") || (navigator.languages ? navigator.languages[0] : "en")
 	}
@@ -119,14 +126,52 @@ class RelativeTime extends HTMLElement {
 	get rtf() {
 		return new Intl.RelativeTimeFormat(this.locale, {
 			localeMatcher: "best fit",
-			numeric: "always",
-			style: "long",
+			numeric: this.formatNumeric,
+			style: this.formatStyle,
 		})
 	}
 
 	get timeElements() {
 		return this.querySelectorAll("time[datetime]")
 	}
+
+	get division() {
+		return this.getAttribute("division")
+	}
+
+	get maxDivision() {
+		return this.getAttribute("max-division")
+	}
+
+	get formatNumeric() {
+		// default = "auto"
+		const numericFormat = this.getAttribute("format-numeric")
+		if (numericFormat && RelativeTime.numericFormats.includes(numericFormat)) {
+			return numericFormat
+		} else if (this.division || this.maxDivision) {
+			return "always"
+		}
+		return "auto"
+	}
+
+	get formatStyle() {
+		// default = "long"
+		const styleFormat = this.getAttribute("format-style")
+		if (styleFormat && RelativeTime.styleFormats.includes(styleFormat)) {
+			return styleFormat
+		}
+		return "long"
+	}
+
+	get update() {
+		// default = 10 minutes
+		return this.hasAttribute("update") ? Number(this.getAttribute("update")) : 600
+	}
+
+	get enableUpdates() {
+		return this.getAttribute("update") !== "false"
+	}
+
 }
 
 RelativeTime.register()

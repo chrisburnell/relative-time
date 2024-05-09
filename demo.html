@@ -9,39 +9,90 @@
 	</head>
 	<body>
 		<h1><code>&lt;relative-time&gt;</code></h1>
-		<p>These countdowns will update every 10 minutes and every time you unfocus and focus this window/tab.</p>
+		<p>These countdowns will update every 10 minutes and every time you refocus this window/tab.</p>
 		<h2 id="general">General usage example</h2>
 		<p>
-			<relative-time><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+			<relative-time update="false"><time class="yesterday" datetime="2024-05-08T17:40:26+0800">11 April 2024</time></relative-time>
+		</p>
+		<p>
+			<relative-time><time class="past" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+		</p>
+		<p>
+			<relative-time><time class="future" datetime="2024-05-08T17:40:26+0800">11 April 2024</time></relative-time>
+		</p>
+		<p>
+			<relative-time update="false"><time class="tomorrow" datetime="2024-05-08T17:40:26+0800">11 April 2024</time></relative-time>
 		</p>
 		<h2 id="explicit-locale">Explicit locale</h2>
 		<p>
-			<relative-time lang="fr"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+			<relative-time lang="fr"><time class="past" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(Français / French)</em>
 		</p>
 		<h2 id="inherited-locale">Inherited locale</h2>
 		<p lang="de">
-			<relative-time><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time>
+			<relative-time><time class="past" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(Deutsch / German)</em>
 		</p>
-		<h2 id="annual">Update frequency</h2>
+		<h2 id="update">Update frequency</h2>
 		<p>
-			<relative-time update="3"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(updates every 3 seconds)</em>
-		</p>
-		<p>
-			<relative-time update="1">from <time id="past-further" datetime="2024-04-09T12:00:00+0800">9 April 2024</time> until <time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(updates every second)</em>
+			<relative-time update="3"><time class="past" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(updates every 3 seconds)</em>
 		</p>
 		<p>
-			<relative-time update="false"><time datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(never updates)</em>
+			<relative-time update="1">from <time class="past-further" datetime="2024-04-09T12:00:00+0800">9 April 2024</time> until <time class="future" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(updates every second)</em>
+		</p>
+		<p>
+			<relative-time update="false"><time class="past" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(never updates)</em>
+		</p>
+		<h2 id="division">Specific division</h2>
+		<p>
+			<relative-time division="seconds"><time class="tomorrow" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></event-countdown> <em>(seconds)</em>
+		</p>
+		<h2 id="max-division">Maximum division</h2>
+		<p>
+			<relative-time max-division="minutes"><time class="tomorrow" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></event-countdown> <em>(minutes)</em>
+		</p>
+		<h2 id="numeric-format">Numeric format</h2>
+		<p>
+			<relative-time format-numeric="always"><time class="tomorrow" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></event-countdown> <em>(always)</em>
+		</p>
+		<p>
+			<relative-time update="false" format-numeric="auto"><time class="tomorrow" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></event-countdown> <em>(auto)</em>
+		</p>
+		<h2 id="style-format">Style format</h2>
+		<p>
+			<relative-time format-style="long"><time class="future" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></event-countdown> <em>(long)</em>
+		</p>
+		<p>
+			<relative-time format-style="short"><time class="future" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></event-countdown> <em>(short)</em>
+		</p>
+		<p>
+			<relative-time format-style="narrow"><time class="future" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></event-countdown> <em>(narrow)</em>
 		</p>
 		<script>
 			const nowEpoch = Date.now()
-			const past = new Date(nowEpoch - (1 * 1000)).toISOString()
-			const pastFurther = new Date(nowEpoch - (10 * 1000)).toISOString()
-			const timeElements = document.querySelectorAll("[datetime]:not(#past-further)")
-			const timeElementsArray = [...timeElements]
-			timeElementsArray.forEach((element) => {
+			const past = new Date(nowEpoch - (10 * 1000)).toISOString()
+			const timePastElements = document.querySelectorAll(".past")
+			timePastElements.forEach((element) => {
 				element.setAttribute("datetime", past)
 			})
-			document.getElementById("past-further").setAttribute("datetime", pastFurther)
+			const pastFurther = new Date(nowEpoch - (60 * 1000)).toISOString()
+			const timePastFurtherElements = document.querySelectorAll(".past-further")
+			timePastFurtherElements.forEach((element) => {
+				element.setAttribute("datetime", pastFurther)
+			})
+			const future = new Date(nowEpoch + (10 * 1000)).toISOString()
+			const timeFutureElements = document.querySelectorAll(".future")
+			timeFutureElements.forEach((element) => {
+				element.setAttribute("datetime", future)
+			})
+			const yesterday = new Date(nowEpoch - (60 * 60 * 24 * 1000)).toISOString()
+			const timeYesterdayElements = document.querySelectorAll(".yesterday")
+			timeYesterdayElements.forEach((element) => {
+				element.setAttribute("datetime", yesterday)
+			})
+			const tomorrow = new Date(nowEpoch + (60 * 60 * 24 * 1000) + (10 * 1000)).toISOString()
+			const timeTomorrowElements = document.querySelectorAll(".tomorrow")
+			timeTomorrowElements.forEach((element) => {
+				element.setAttribute("datetime", tomorrow)
+			})
 		</script>
 		<script type="module" src="relative-time.js" defer></script>
 	</body>
