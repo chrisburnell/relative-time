@@ -7,6 +7,9 @@ on:
 jobs:
   publish-npm:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -14,6 +17,8 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm install
-      - run: npm publish
+      - run: |
+          TAG=$(echo $GITHUB_REF_NAME | grep -oP '^v\d+\.\d+\.\d+-?\K(\w+)?')
+          npm publish --provenance --access=public --tag ${TAG:-latest}
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}

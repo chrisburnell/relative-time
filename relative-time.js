@@ -17,13 +17,18 @@ class RelativeTime extends HTMLElement {
 
 		if (this.enableUpdates) {
 			this.beginUpdateLoop()
+			const { signal } = this.controller = new AbortController()
 			window.addEventListener("focus", () => {
 				this.windowFocusHandler()
-			})
+			}, { signal })
 			window.addEventListener("blur", () => {
 				this.windowBlurHandler()
-			})
+			}, { signal })
 		}
+	}
+
+	disconnectedCallback() {
+		this.controller.abort()
 	}
 
 	getRelativeTime(datetime, division) {
@@ -120,7 +125,7 @@ class RelativeTime extends HTMLElement {
 	]
 
 	get locale() {
-		return this.getAttribute("lang") || this.closest("[lang]")?.getAttribute("lang") || (navigator.languages ? navigator.languages[0] : "en")
+		return this.getAttribute("lang") || this.closest("[lang]")?.getAttribute("lang") || undefined
 	}
 
 	get rtf() {
@@ -164,7 +169,7 @@ class RelativeTime extends HTMLElement {
 	}
 
 	get update() {
-		// default = 10 minutes
+		// default = 600 seconds = 10 minutes
 		return this.hasAttribute("update") ? Number(this.getAttribute("update")) : 600
 	}
 
