@@ -1,0 +1,6 @@
+.github
+.gitattributes
+.vscode
+.editorconfig
+.eslintrc.json
+.prettierrc
