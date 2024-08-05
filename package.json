@@ -11,13 +11,26 @@
   "bugs": {
     "url": "https://github.com/chrisburnell/relative-time/issues"
   },
-  "author": "Chris Burnell <me@chrisburnell.com>",
+  "author": {
+    "name": "Chris Burnell",
+    "email": "me@chrisburnell.com",
+    "url": "https://chrisburnell.com/"
+  },
   "contributors": [
     {
       "name": "Chris Burnell",
       "email": "me@chrisburnell.com",
-      "url": "https://chrisburnell.com",
-      "mastodon": "@chrisburnell@repc.co"
+      "url": "https://chrisburnell.com"
+    }
+  ],
+  "funding": [
+    {
+      "type": "buymeacoffee",
+      "url": "https://buymeacoffee.com/chrisburnell"
+    },
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/chrisburnell"
     }
   ],
   "publishConfig": {
