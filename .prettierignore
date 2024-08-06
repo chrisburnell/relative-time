@@ -1,0 +1,10 @@
+# Ignore generated/vendor files
+**/generated
+**/vendors
+
+# Ignore specific filetypes
+*.html
+*.json
+*.md
+*.njk
+*.yml

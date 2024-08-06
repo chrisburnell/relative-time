@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: ''
 labels: bug
 assignees: chrisburnell
-
 ---
 
 **Describe the bug**

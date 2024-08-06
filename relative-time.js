@@ -1,85 +1,96 @@
 class RelativeTime extends HTMLElement {
 	static register(tagName) {
 		if ("customElements" in window) {
-			customElements.define(tagName || "relative-time", RelativeTime)
+			customElements.define(tagName || "relative-time", RelativeTime);
 		}
 	}
 
 	connectedCallback() {
 		if (this.timeElements.length === 0) {
-			return
+			return;
 		}
 
-		this.lastUpdate = 0
-		this.updateLoop
+		this.lastUpdate = 0;
+		this.updateLoop;
 
-		this.setString()
+		this.setString();
 
 		if (this.enableUpdates) {
-			this.beginUpdateLoop()
-			const { signal } = this.controller = new AbortController()
-			window.addEventListener("focus", () => {
-				this.windowFocusHandler()
-			}, { signal })
-			window.addEventListener("blur", () => {
-				this.windowBlurHandler()
-			}, { signal })
+			this.beginUpdateLoop();
+			const { signal } = (this.controller = new AbortController());
+			window.addEventListener(
+				"focus",
+				() => {
+					this.windowFocusHandler();
+				},
+				{ signal },
+			);
+			window.addEventListener(
+				"blur",
+				() => {
+					this.windowBlurHandler();
+				},
+				{ signal },
+			);
 		}
 	}
 
 	disconnectedCallback() {
-		this.controller.abort()
+		this.controller.abort();
 	}
 
 	getRelativeTime(datetime, division) {
-		let difference = (datetime.getTime() - Date.now()) / 1000
+		let difference = (datetime.getTime() - Date.now()) / 1000;
 
 		if (division) {
-			return this.rtf.format(Math.round(difference), division)
+			return this.rtf.format(Math.round(difference), division);
 		}
 
 		for (const division of RelativeTime.divisions) {
-			if (this.maxDivision && division.name === this.maxDivision.replace(/s$/, "")) {
-				return this.rtf.format(Math.round(difference), division.name)
+			if (
+				this.maxDivision &&
+				division.name === this.maxDivision.replace(/s$/, "")
+			) {
+				return this.rtf.format(Math.round(difference), division.name);
 			}
 			if (Math.floor(Math.abs(difference)) < division.amount) {
-				return this.rtf.format(Math.round(difference), division.name)
+				return this.rtf.format(Math.round(difference), division.name);
 			}
-			difference /= division.amount
+			difference /= division.amount;
 		}
 	}
 
 	setString() {
 		this.timeElements.forEach((element) => {
-			const datetime = new Date(element.getAttribute("datetime"))
-			element.innerHTML = this.getRelativeTime(datetime, this.division)
-			element.title = `${datetime.toLocaleString()} (local time)`
-		})
+			const datetime = new Date(element.getAttribute("datetime"));
+			element.innerHTML = this.getRelativeTime(datetime, this.division);
+			element.title = `${datetime.toLocaleString()} (local time)`;
+		});
 	}
 
 	beginUpdateLoop() {
 		const updateLoop = (currentTime) => {
-			this.updateLoop = requestAnimationFrame(updateLoop)
+			this.updateLoop = requestAnimationFrame(updateLoop);
 			if (currentTime - this.lastUpdate >= this.update * 1000) {
-				this.setString()
-				this.lastUpdate = currentTime
+				this.setString();
+				this.lastUpdate = currentTime;
 			}
-		}
-		this.updateLoop = requestAnimationFrame(updateLoop)
+		};
+		this.updateLoop = requestAnimationFrame(updateLoop);
 	}
 
 	stopUpdateLoop() {
-		this.lastUpdate = 0
-		cancelAnimationFrame(this.updateLoop)
+		this.lastUpdate = 0;
+		cancelAnimationFrame(this.updateLoop);
 	}
 
 	windowFocusHandler() {
-		this.setString()
-		this.beginUpdateLoop()
+		this.setString();
+		this.beginUpdateLoop();
 	}
 
 	windowBlurHandler() {
-		this.stopUpdateLoop()
+		this.stopUpdateLoop();
 	}
 
 	static divisions = [
@@ -111,21 +122,18 @@ class RelativeTime extends HTMLElement {
 			amount: Number.POSITIVE_INFINITY,
 			name: "year",
 		},
-	]
+	];
 
-	static numericFormats = [
-		"always",
-		"auto",
-	]
+	static numericFormats = ["always", "auto"];
 
-	static styleFormats = [
-		"long",
-		"short",
-		"narrow",
-	]
+	static styleFormats = ["long", "short", "narrow"];
 
 	get locale() {
-		return this.getAttribute("lang") || this.closest("[lang]")?.getAttribute("lang") || undefined
+		return (
+			this.getAttribute("lang") ||
+			this.closest("[lang]")?.getAttribute("lang") ||
+			undefined
+		);
 	}
 
 	get rtf() {
@@ -133,50 +141,54 @@ class RelativeTime extends HTMLElement {
 			localeMatcher: "best fit",
 			numeric: this.formatNumeric,
 			style: this.formatStyle,
-		})
+		});
 	}
 
 	get timeElements() {
-		return this.querySelectorAll("time[datetime]")
+		return this.querySelectorAll("time[datetime]");
 	}
 
 	get division() {
-		return this.getAttribute("division")
+		return this.getAttribute("division");
 	}
 
 	get maxDivision() {
-		return this.getAttribute("max-division")
+		return this.getAttribute("max-division");
 	}
 
 	get formatNumeric() {
 		// default = "auto"
-		const numericFormat = this.getAttribute("format-numeric")
-		if (numericFormat && RelativeTime.numericFormats.includes(numericFormat)) {
-			return numericFormat
+		const numericFormat = this.getAttribute("format-numeric");
+		if (
+			numericFormat &&
+			RelativeTime.numericFormats.includes(numericFormat)
+		) {
+			return numericFormat;
 		} else if (this.division || this.maxDivision) {
-			return "always"
+			return "always";
 		}
-		return "auto"
+		return "auto";
 	}
 
 	get formatStyle() {
 		// default = "long"
-		const styleFormat = this.getAttribute("format-style")
+		const styleFormat = this.getAttribute("format-style");
 		if (styleFormat && RelativeTime.styleFormats.includes(styleFormat)) {
-			return styleFormat
+			return styleFormat;
 		}
-		return "long"
+		return "long";
 	}
 
 	get update() {
 		// default = 600 seconds = 10 minutes
-		return this.hasAttribute("update") ? Number(this.getAttribute("update")) : 600
+		return this.hasAttribute("update")
+			? Number(this.getAttribute("update"))
+			: 600;
 	}
 
 	get enableUpdates() {
-		return this.getAttribute("update") !== "false"
+		return this.getAttribute("update") !== "false";
 	}
-
 }
 
-RelativeTime.register()
+RelativeTime.register();
