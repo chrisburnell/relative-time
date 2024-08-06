@@ -59,7 +59,7 @@ A Web Component to display an event countdown.
 <script type="module" src="relative-time.js"></script>
 
 <!-- Format using seconds up to minutes -->
-<relative-time max-divions="minute"><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
+<relative-time max-division="minute"><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
 ```
 
 ### Numeric format
