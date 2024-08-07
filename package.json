@@ -39,7 +39,8 @@
   },
   "main": "relative-time.js",
   "scripts": {
-    "start": "npx http-server ."
+    "start": "npx http-server .",
+    "test": "node --test"
   },
   "keywords": [
     "component",
@@ -47,5 +48,9 @@
     "custom elements",
     "web",
     "web components"
-  ]
+  ],
+  "devDependencies": {
+    "linkedom": "^0.18.4"
+  },
+  "type": "module"
 }

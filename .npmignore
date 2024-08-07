@@ -5,4 +5,4 @@
 .eslintrc.json
 .prettierrc
 .prettierignore
-test.js
+relative-time.test.js
