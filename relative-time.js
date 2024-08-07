@@ -1,9 +1,20 @@
-class RelativeTime extends HTMLElement {
+export default class RelativeTime extends HTMLElement {
 	static register(tagName) {
 		if ("customElements" in window) {
 			customElements.define(tagName || "relative-time", RelativeTime);
 		}
 	}
+
+	static observedAttributes = [
+		"lang",
+		"update",
+		"division",
+		"max-division",
+		"format-numeric",
+		"numeric-format",
+		"format-style",
+		"style-format",
+	];
 
 	connectedCallback() {
 		if (this.timeElements.length === 0) {
@@ -15,7 +26,7 @@ class RelativeTime extends HTMLElement {
 
 		this.setString();
 
-		if (this.enableUpdates) {
+		if (this.enableUpdates && typeof requestAnimationFrame === "function") {
 			this.beginUpdateLoop();
 			const { signal } = (this.controller = new AbortController());
 			window.addEventListener(
@@ -35,8 +46,14 @@ class RelativeTime extends HTMLElement {
 		}
 	}
 
+	attributeChangedCallback() {
+		this.setString();
+	}
+
 	disconnectedCallback() {
-		this.controller.abort();
+		if (this.controller) {
+			this.controller.abort();
+		}
 	}
 
 	getRelativeTime(datetime, division) {
@@ -64,7 +81,11 @@ class RelativeTime extends HTMLElement {
 		this.timeElements.forEach((element) => {
 			const datetime = new Date(element.getAttribute("datetime"));
 			element.innerHTML = this.getRelativeTime(datetime, this.division);
-			element.title = `${datetime.toLocaleString()} (local time)`;
+			if (!element.title) {
+				element.title = datetime.toLocaleString(undefined, {
+					timeZoneName: "short",
+				});
+			}
 		});
 	}
 
@@ -158,7 +179,9 @@ class RelativeTime extends HTMLElement {
 
 	get formatNumeric() {
 		// default = "auto"
-		const numericFormat = this.getAttribute("format-numeric");
+		const numericFormat =
+			this.getAttribute("format-numeric") ||
+			this.getAttribute("numeric-format");
 		if (
 			numericFormat &&
 			RelativeTime.numericFormats.includes(numericFormat)
@@ -172,7 +195,9 @@ class RelativeTime extends HTMLElement {
 
 	get formatStyle() {
 		// default = "long"
-		const styleFormat = this.getAttribute("format-style");
+		const styleFormat =
+			this.getAttribute("format-style") ||
+			this.getAttribute("style-format");
 		if (styleFormat && RelativeTime.styleFormats.includes(styleFormat)) {
 			return styleFormat;
 		}
