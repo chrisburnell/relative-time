@@ -1,6 +1,6 @@
 {
   "name": "@chrisburnell/relative-time",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A Web Component to display a relative time.",
   "license": "MIT",
   "repository": {
