@@ -9,9 +9,14 @@ describe("<relative-time> Web Component", () => {
 	const defaultBody = `<relative-time><time datetime="${now.toISOString()}">${now.toISOString()}</time></relative-time>`;
 
 	before(async () => {
-		window = global.window = parseHTML(
-			`<!DOCTYPE html><html lang="en"><body>${defaultBody}</body></html>`,
-		);
+		window = global.window = parseHTML(`
+			<!DOCTYPE html>
+			<html lang="en">
+				<body>
+					${defaultBody}
+				</body>
+			</html>
+		`);
 		DocumentFragment = global.DocumentFragment = window.DocumentFragment;
 		document = global.document = window.document;
 		customElements = global.customElements = window.customElements;
@@ -25,7 +30,7 @@ describe("<relative-time> Web Component", () => {
 		document.body.innerHTML = defaultBody;
 	});
 
-	it("Should be defined in the custonElements registry", () => {
+	it("Should be defined in the customElements registry", () => {
 		assert.strictEqual(!!customElements.get("relative-time"), true);
 	});
 
