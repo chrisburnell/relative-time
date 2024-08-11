@@ -4,7 +4,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="A Web Component to display a relative time." />
-		<title>>&lt;relative-time&gt; Web Component Demo</title>
+		<title>&lt;relative-time&gt; Web Component Demo</title>
 		<meta name="color-scheme" content="light dark">
 	</head>
 	<body>
@@ -65,6 +65,10 @@
 		</p>
 		<p>
 			<relative-time format-style="narrow"><time class="future" datetime="2024-04-11T12:00:00+0800">11 April 2024</time></relative-time> <em>(narrow)</em>
+		</p>
+		<h2 id="invalid">Invalid DateTimes</h2>
+		<p>
+			<relative-time><time id="inv" datetime="invalid">This text should not be replaced!</time></relative-time>
 		</p>
 		<script>
 			const nowEpoch = Date.now()

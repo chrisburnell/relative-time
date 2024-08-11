@@ -100,4 +100,12 @@ describe("<relative-time> Web Component", () => {
 
 		assert.strictEqual(/\d+s\s/.test(timeElement.innerHTML), true);
 	});
+
+	it("Should not perform work on invalid datetimes", () => {
+		document.body.innerHTML = `<relative-time><time datetime="invalid">Invalid</time></relative-time>`;
+
+		const timeElement = document.querySelector("time");
+
+		assert.strictEqual(timeElement.innerHTML, "Invalid");
+	});
 });

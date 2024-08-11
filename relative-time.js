@@ -44,6 +44,13 @@ export default class RelativeTime extends HTMLElement {
 				{ signal },
 			);
 		}
+
+		if (typeof MutationObserver === "function") {
+			this.observer = new MutationObserver(
+				this.handleMutations.bind(this),
+			);
+			this.observeDateTimes();
+		}
 	}
 
 	attributeChangedCallback() {
@@ -54,6 +61,22 @@ export default class RelativeTime extends HTMLElement {
 		if (this.controller) {
 			this.controller.abort();
 		}
+		if (this.observer) {
+			this.observer.disconnect();
+		}
+	}
+
+	observeDateTimes() {
+		this.timeElements.forEach((timeElement) => {
+			this.observer.observe(timeElement, {
+				attributes: true,
+				attributeFilter: ["datetime"],
+			});
+		});
+	}
+
+	handleMutations() {
+		this.setString();
 	}
 
 	getRelativeTime(datetime, division) {
@@ -77,14 +100,23 @@ export default class RelativeTime extends HTMLElement {
 		}
 	}
 
+	getDateTime(dateString) {
+		const datetime = new Date(dateString);
+		return !isNaN(datetime) ? datetime : null;
+	}
+
 	setString() {
 		this.timeElements.forEach((element) => {
-			const datetime = new Date(element.getAttribute("datetime"));
+			const datetime = this.getDateTime(element.getAttribute("datetime"));
+			if (!datetime) {
+				return;
+			}
 			element.innerHTML = this.getRelativeTime(datetime, this.division);
-			if (!element.title) {
-				element.title = datetime.toLocaleString(undefined, {
-					timeZoneName: "short",
-				});
+			const title = datetime.toLocaleString(undefined, {
+				timeZoneName: "short",
+			});
+			if (element.title !== title) {
+				element.title = title;
 			}
 		});
 	}
