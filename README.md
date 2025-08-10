@@ -4,7 +4,7 @@ A Web Component to display a relative time.
 
 **[Demo](https://chrisburnell.github.io/relative-time/demo.html)** | **[Further reading](https://chrisburnell.com/relative-time/)**
 
-## Usage
+## Examples
 
 ### General usage example
 

@@ -248,4 +248,6 @@ export default class RelativeTime extends HTMLElement {
 	}
 }
 
-RelativeTime.register();
+if (!new URL(import.meta.url).searchParams.has("nodefine")) {
+	RelativeTime.register();
+}
