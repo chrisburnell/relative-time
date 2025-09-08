@@ -1,5 +1,5 @@
 export default class RelativeTime extends HTMLElement {
-	static register(tagName) {
+	static define(tagName) {
 		if ("customElements" in window) {
 			customElements.define(tagName || "relative-time", RelativeTime);
 		}
@@ -249,5 +249,5 @@ export default class RelativeTime extends HTMLElement {
 }
 
 if (!new URL(import.meta.url).searchParams.has("nodefine")) {
-	RelativeTime.register();
+	RelativeTime.define();
 }
