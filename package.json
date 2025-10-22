@@ -1,7 +1,7 @@
 {
   "name": "@chrisburnell/relative-time",
-  "version": "1.0.7",
-  "description": "A Web Component to display a relative time.",
+  "version": "1.0.8",
+  "description": "A Web Component to display a relative time (e.g. \"5 minutes ago\", \"in 2 days\"). Uses the built-in Intl.RelativeTimeFormat API.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -39,6 +39,9 @@
   },
   "main": "relative-time.js",
   "scripts": {
+    "build": "npm run minify && npm run generate-cem",
+    "generate-cem": "npx cem analyze --config=custom-elements-manifest.config.js",
+    "minify": "esbuild relative-time.js --minify-whitespace --minify-syntax --outfile=relative-time.min.js",
     "start": "npx http-server .",
     "test": "node --test"
   },
@@ -50,7 +53,10 @@
     "web components"
   ],
   "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.10",
+    "esbuild": "^0.25.11",
     "linkedom": "^0.18.4"
   },
-  "type": "module"
+  "type": "module",
+  "customElements": "custom-elements.json"
 }

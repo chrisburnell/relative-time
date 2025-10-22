@@ -1,6 +1,6 @@
 # `<relative-time>`
 
-A Web Component to display a relative time.
+A Web Component to display a relative time (e.g. "5 minutes ago", "in 2 days"). Uses the built-in `Intl.RelativeTimeFormat` API.
 
 **[Demo](https://chrisburnell.github.io/relative-time/demo.html)** | **[Further reading](https://chrisburnell.com/relative-time/)**
 

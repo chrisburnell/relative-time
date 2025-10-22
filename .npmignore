@@ -5,5 +5,6 @@
 .eslintrc.json
 .prettierrc
 .prettierignore
+custom-elements-manifest.config.js
 relative-time.test.js
 demo.html
