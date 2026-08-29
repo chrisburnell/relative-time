@@ -1,6 +1,6 @@
 {
   "name": "@chrisburnell/relative-time",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "A Web Component to display a relative time (e.g. \"5 minutes ago\", \"in 2 days\"). Uses the built-in Intl.RelativeTimeFormat API.",
   "license": "MIT",
   "repository": {
