@@ -5,6 +5,7 @@
 .eslintrc.json
 .prettierrc
 .prettierignore
+cem-to-markdown.js
 custom-elements-manifest.config.js
 relative-time.test.js
 demo.html

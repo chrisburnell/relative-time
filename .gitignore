@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Build outputs (generated during CI)
+relative-time.cjs
+relative-time.min.js
+relative-time.min.cjs
+custom-elements.json
+custom-elements.md

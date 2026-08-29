@@ -28,12 +28,11 @@ export default class RelativeTime extends HTMLElement {
 			return;
 		}
 
-		this.lastUpdate = 0;
 		this.updateLoop;
 
 		this.#setString();
 
-		if (this.enableUpdates && typeof requestAnimationFrame === "function") {
+		if (this.enableUpdates) {
 			this.#beginUpdateLoop();
 			const { signal } = (this.controller = new AbortController());
 			window.addEventListener(
@@ -289,14 +288,12 @@ export default class RelativeTime extends HTMLElement {
 	 * @private
 	 */
 	#beginUpdateLoop() {
-		const updateLoop = (currentTime) => {
-			this.updateLoop = requestAnimationFrame(updateLoop);
-			if (currentTime - this.lastUpdate >= this.update * 1000) {
-				this.#setString();
-				this.lastUpdate = currentTime;
-			}
-		};
-		this.updateLoop = requestAnimationFrame(updateLoop);
+		this.updateLoop = setInterval(() => {
+			this.#setString();
+		}, this.update * 1000);
+		// Node's Timeout supports unref(); browsers' interval id doesn't,
+		// so this is a no-op there and never keeps a page from going idle.
+		this.updateLoop.unref?.();
 	}
 
 	/**
@@ -304,8 +301,7 @@ export default class RelativeTime extends HTMLElement {
 	 * @private
 	 */
 	#stopUpdateLoop() {
-		this.lastUpdate = 0;
-		cancelAnimationFrame(this.updateLoop);
+		clearInterval(this.updateLoop);
 	}
 
 	/**
