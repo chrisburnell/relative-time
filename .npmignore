@@ -3,6 +3,7 @@
 .vscode
 .editorconfig
 .eslintrc.json
+.nvmrc
 .prettierrc
 .prettierignore
 cem-to-markdown.js

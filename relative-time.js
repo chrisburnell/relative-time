@@ -2,7 +2,6 @@
  * @tag relative-time
  * @summary A Web Component to display a relative time (e.g. "5 minutes ago", "in 2 days"). Uses the built-in Intl.RelativeTimeFormat API.
  * @attr {string} lang - Language code to control locale formatting.
- * @attr {number} update - How often to refresh the displayed time in seconds. Defaults to 600.
  * @attr {string} division - Force a specific unit (e.g. "minute", "hour").
  * @attr {string} max-division - Maximum unit allowed when formatting.
  * @attr {string} format-numeric - Determines numeric display ("auto" or "always").
@@ -28,28 +27,16 @@ export default class RelativeTime extends HTMLElement {
 			return;
 		}
 
-		this.updateLoop;
-
 		this.#setString();
 
-		if (this.enableUpdates) {
-			this.#beginUpdateLoop();
-			const { signal } = (this.controller = new AbortController());
-			window.addEventListener(
-				"focus",
-				() => {
-					this.#windowFocusHandler();
-				},
-				{ signal },
-			);
-			window.addEventListener(
-				"blur",
-				() => {
-					this.#windowBlurHandler();
-				},
-				{ signal },
-			);
-		}
+		const { signal } = (this.controller = new AbortController());
+		window.addEventListener(
+			"focus",
+			() => {
+				this.#setString();
+			},
+			{ signal },
+		);
 
 		if (typeof MutationObserver === "function") {
 			this.observer = new MutationObserver(
@@ -84,7 +71,6 @@ export default class RelativeTime extends HTMLElement {
 	 */
 	static observedAttributes = [
 		"lang",
-		"update",
 		"division",
 		"max-division",
 		"format-numeric",
@@ -224,25 +210,6 @@ export default class RelativeTime extends HTMLElement {
 	}
 
 	/**
-	 * @type {number}
-	 * @readonly
-	 */
-	get update() {
-		// default = 600 seconds = 10 minutes
-		return this.hasAttribute("update")
-			? Number(this.getAttribute("update"))
-			: 600;
-	}
-
-	/**
-	 * @type {boolean}
-	 * @readonly
-	 */
-	get enableUpdates() {
-		return this.getAttribute("update") !== "false";
-	}
-
-	/**
 	 * @returns {void}
 	 * @private
 	 */
@@ -273,7 +240,7 @@ export default class RelativeTime extends HTMLElement {
 			if (!datetime) {
 				return;
 			}
-			element.innerHTML = this.getRelativeTime(datetime, this.division);
+			element.textContent = this.getRelativeTime(datetime, this.division);
 			const title = datetime.toLocaleString(undefined, {
 				timeZoneName: "short",
 			});
@@ -281,44 +248,6 @@ export default class RelativeTime extends HTMLElement {
 				element.title = title;
 			}
 		});
-	}
-
-	/**
-	 * @returns {void}
-	 * @private
-	 */
-	#beginUpdateLoop() {
-		this.updateLoop = setInterval(() => {
-			this.#setString();
-		}, this.update * 1000);
-		// Node's Timeout supports unref(); browsers' interval id doesn't,
-		// so this is a no-op there and never keeps a page from going idle.
-		this.updateLoop.unref?.();
-	}
-
-	/**
-	 * @returns {void}
-	 * @private
-	 */
-	#stopUpdateLoop() {
-		clearInterval(this.updateLoop);
-	}
-
-	/**
-	 * @returns {void}
-	 * @private
-	 */
-	#windowFocusHandler() {
-		this.#setString();
-		this.#beginUpdateLoop();
-	}
-
-	/**
-	 * @returns {void}
-	 * @private
-	 */
-	#windowBlurHandler() {
-		this.#stopUpdateLoop();
 	}
 
 	/**

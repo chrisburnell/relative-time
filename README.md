@@ -32,18 +32,6 @@ A Web Component to display a relative time (e.g. "5 minutes ago", "in 2 days"). 
 </p>
 ```
 
-### Update frequency
-
-```html
-<script type="module" src="relative-time.js"></script>
-
-<!-- Updates every 1 second -->
-<relative-time update="1"><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
-
-<!-- Disable updates -->
-<relative-time update="false"><time datetime="2024-04-09T00:00:00+14:00">9 April 2024</time></relative-time>
-```
-
 ### Specific division
 
 ```html
